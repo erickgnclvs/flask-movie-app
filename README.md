@@ -2,7 +2,7 @@
 
 After 5 months of CS50, I finally started my final project. 
 
-It is going to be a Web Application in which you will be able to select movies and series from a database fed by IMDb API and add them to a favourites list
+It is going to be a Web Application in which you will be able to select movies and series from a database fed by IMDb API and add them to a favorites list
 
 It will be implemented on Python 3.10.6 with Flask 2.2.2.
 
