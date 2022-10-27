@@ -8,38 +8,34 @@
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
             <link rel="stylesheet" href="{{ url_for('static', filename='../static/styles.css') }}">
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-            <title>Final Project: {% block title %} {% endblock %}</title>
+            <title>2WATCH: {% block title %} {% endblock %}</title>
         {% endblock %}
     </head>
     <body>
-        <nav class="navbar navbar-expand-sm navbar-light" style="background-color: #e3f2fd;">
+        <nav class="navbar navbar-expand-md navbar-light" style="background-color: #e3f2fd;">
             <div class="container-fluid">
                 
                 <!-- place logo in here -->
                 
-                <a id="logo" href="/"><img src="{{ url_for('static', filename='f.png') }}" height="30" width="30" alt="logo"></a>
-                <a class="navbar-brand" href="/">Final Project</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" href="/"><img src="{{ url_for('static', filename='icon.png') }}" height="35" width="84" alt="logo"></a>
+                <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target="#navbar" data-bs-toggle="collapse" type="button">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarsExample03">
-                    <ul class="navbar-nav ms-auto mb-2 mb-sm-0">
-
-                        <!-- edit this part with correct links -->
-
-                        <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('home') }}">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Page 2</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Page 3</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Page 4</a>
-                        </li>
-                    </ul>
+                <div class="collapse navbar-collapse" id="navbar">
+                    <!-- jinja loop if logged in -->
+                        <ul class="navbar-nav me-auto mt-2">
+                            <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/favorites">Favorites</a></li>
+                        </ul>
+                        <ul class="navbar-nav ms-auto mt-2">
+                            <li class="nav-item"><a class="nav-link" href="/changepassword">Change Password</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
+                        </ul>
+                    <!-- else -->
+                        <!-- <ul class="navbar-nav ms-auto mt-2"> -->
+                            <!-- <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li> -->
+                        <!-- </ul> -->
+                    <!-- endif -->
                 </div>
             </div>
           </nav>  
