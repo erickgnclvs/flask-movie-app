@@ -15,7 +15,7 @@ Session(app)
 
 # Set database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-db = SQLAlchemy(app)
+database = SQLAlchemy(app)
 
 
 @app.route('/')
