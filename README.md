@@ -8,8 +8,7 @@ It will be implemented on Python 3.10.6 with Flask 2.2.2.
 
 App structure:
 
-    /home   /register   /login    /forgotpassword   /changepassword   /search   /favorites    /add    /delete
-  
+    /home   /register   /login    /forgotpassword   /changepassword   /search   /favorites    /add    /delete    /logout  
 
 <h2>//PSEUDOCODE</h2>
 <br>
@@ -91,11 +90,16 @@ else:<br>
 &emsp;error<br>
 <br>
 
-**/changepassword** - in home user will have a button that redirects here<br>
+**/changepassword** - in navbar user will have a button that redirects here<br>
 display a form asking for old password, newpassword and newpassword confirmation<br>
 if data match database data:<br>
 &emsp;success!<br>
-&emsp;/home<br
+&emsp;/home<br>
 else:<br>
 &emsp;error<br>
+<br>
 
+**/logout** - in navbar user will have a button that redirects here<br>
+disconnect user<br>
+/home<br>
+<br>
