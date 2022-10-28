@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-    Login
+    Register
 {% endblock %}
 
 {% block body %}
@@ -9,16 +9,18 @@
         <div class="mask">
             <div class="container d-flex align-items-center justify-content-center text-center h-100">
                 <div class="text-dark">
-                    <h1 class="mb-3">Login</h1>
-                    <form class="form" action="{{ url_for('login') }}" method="post">
+                    <h1 class="mb-3">Register</h1>
+                    <form class="form" action="{{ url_for('register') }}" method="post">
                         <div class="mb-3">
                             <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="username" name="username" placeholder="Username" type="text">
                         </div>
                         <div class="mb-3">
                             <input class="form-control mx-auto w-auto" id="password" name="password" placeholder="Password" type="password">
                         </div>
-                        <button type="submit" class="btn btn-outline-dark btn-lg m-2" value="Login">Login</button>
-                        <a class="btn btn-outline-dark btn-lg m-2" href="{{ url_for('register') }}" role="button">Register</a>
+                        <div class="mb-3">
+                            <input class="form-control mx-auto w-auto" id="confirmation" name="confirmation" placeholder="Confirm password" type="password">
+                        </div>
+                        <input type="submit" class="btn btn-outline-dark btn-lg m-2" value="Register">
                     </form>
                 </div>
             </div>
