@@ -8,34 +8,36 @@
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
             <link rel="stylesheet" href="{{ url_for('static', filename='../static/styles.css') }}">
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-            <title>2WATCH: {% block title %} {% endblock %}</title>
+            <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.png') }}">
+            <title>Movielito: {% block title %} {% endblock %}</title>
         {% endblock %}
     </head>
     <body>
-        <nav class="navbar navbar-expand-md navbar-light" style="background-color: #e3f2fd;">
+        <nav class="navbar navbar-expand-md navbar-light" style="background-color: #fffbe6;">
             <div class="container-fluid">
                 
                 <!-- place logo in here -->
                 
-                <a class="navbar-brand" href="/"><img src="{{ url_for('static', filename='icon.png') }}" height="35" width="84" alt="logo"></a>
+                <a class="navbar-brand" href="/"><img src="{{ url_for('static', filename='icon.png') }}" height="40" width="100" alt="logo"></a>
                 <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target="#navbar" data-bs-toggle="collapse" type="button">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbar">
-                    <!-- jinja loop if logged in -->
+                    {% if session["user_id"] %}
                         <ul class="navbar-nav me-auto mt-2">
-                            <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/favorites">Favorites</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('favorites') }}">Favorites</a></li>
                         </ul>
                         <ul class="navbar-nav ms-auto mt-2">
-                            <li class="nav-item"><a class="nav-link" href="/changepassword">Change Password</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('changepassword') }}">Change Password</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Log Out</a></li>
                         </ul>
-                    <!-- else -->
-                        <!-- <ul class="navbar-nav ms-auto mt-2"> -->
-                            <!-- <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li> -->
-                        <!-- </ul> -->
-                    <!-- endif -->
+                    {% else %}
+                        <ul class="navbar-nav ms-auto mt-2">
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">About</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Log In</a></li>
+                        </ul>
+                    {% endif %}
                 </div>
             </div>
           </nav>  

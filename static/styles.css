@@ -1,7 +1,7 @@
 .mask {
-    /* background-image: url("https://mdbootstrap.com/img/new/fluid/city/018.jpg"); */
-    background-color: #f2fbfd;
-    height: 100vh;
+    background-color: #fffdf2;
+    height: 98vh;
+    margin: 0 auto;
   }
 
 @media (min-width: 992px) {
@@ -10,6 +10,7 @@
     }
 }
 
-#logo {
-    margin-right: 3px;
+
+.nav-item {
+  margin-bottom: 3px;
 }
