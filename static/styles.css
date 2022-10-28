@@ -1,6 +1,6 @@
-.mask {
+ .mask {
     background-color: #fffdf2;
-    height: 98vh;
+    height: 80vh;
     margin: 0 auto;
   }
 
@@ -9,7 +9,6 @@
       margin-top: -58.59px;
     }
 }
-
 
 .nav-item {
   margin-bottom: 3px;

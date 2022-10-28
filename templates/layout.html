@@ -27,6 +27,7 @@
                         <ul class="navbar-nav me-auto mt-2">
                             <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ url_for('favorites') }}">Favorites</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">About</a></li>
                         </ul>
                         <ul class="navbar-nav ms-auto mt-2">
                             <li class="nav-item"><a class="nav-link" href="{{ url_for('changepassword') }}">Change Password</a></li>
@@ -40,9 +41,11 @@
                     {% endif %}
                 </div>
             </div>
-          </nav>  
-        {% block body %}
+          </nav>
+        <div id="main">
+            {% block body %}
 
-        {% endblock %}
+            {% endblock %}
+        </div>
     </body>
 </html>
