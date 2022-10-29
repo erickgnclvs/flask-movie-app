@@ -9,7 +9,7 @@
             <link rel="stylesheet" href="{{ url_for('static', filename='../static/styles.css') }}">
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
             <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.png') }}">
-            <title>Movielito: {% block title %} {% endblock %}</title>
+            <title>Movielito |{% block title %} {% endblock %}</title>
         {% endblock %}
     </head>
     <body>
@@ -23,7 +23,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbar">
-                    {% if session["user_id"] %}
+                    {% if session["user"] %}
                         <ul class="navbar-nav me-auto mt-2">
                             <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ url_for('favorites') }}">Favorites</a></li>

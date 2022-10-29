@@ -39,6 +39,8 @@ class Users(db.Model):
 with app.app_context():
     db.create_all()
 
+# Clear all sessions
+
 @app.after_request
 def after_request(response):
     """Ensure responses aren't cached"""
@@ -67,19 +69,39 @@ def about():
 def register():
     # This will register the user
     # Thanks https://www.youtube.com/c/MrAmithsChannel for the help!
-
     if request.method == "POST":
         username = request.form.get('username')
         password = request.form.get('password')
-        userdata = Users(
-            username = username,
-            hash = password,
-        )
+        confirmation = request.form.get('confirmation')
 
-        userdata.set_password(password)
-        db.session.add(userdata)
-        db.session.commit()
-        return redirect('/')
+        # Check for errors
+        if not username or not password or not confirmation:
+            print('please fill all spaces')
+            return render_template('error.html')
+        
+        elif password != confirmation:
+            print('passwords dont match')
+            return render_template('error.html')
+        
+        # If no errors then register
+        else:
+
+            # Try to register
+            try:
+                user = Users(
+                    username = username,
+                    hash = password,
+                )
+
+                user.set_password(password)
+                db.session.add(user)
+                db.session.commit()
+                return redirect('/')
+
+            # If it fails...
+            except:
+                print('couldnt insert into database')
+                return render_template('error.html')
 
     # This will render the registration form
     else:
@@ -88,7 +110,32 @@ def register():
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-    return render_template("login.html")
+    # This will log the user in
+    if request.method == "POST":
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        # Handle errors
+        if not username or not password:
+            print('please fill all spaces')
+            return render_template('error.html')
+
+        # Fetch user data from database
+        user = Users.query.filter_by(username=username).first()
+
+        # Check password
+        if user.check_password(password):
+            session['user'] = user.id
+            return redirect('/')    
+        
+        # If passwords don't match
+        else:
+            print('wrong password')
+            return 'error'
+
+    # This will render the login form
+    else:
+        return render_template("login.html")
 
 
 @app.route('/favorites', methods=['POST', 'GET'])
@@ -110,15 +157,63 @@ def delete():
 
 
 @app.route('/changepassword', methods=['POST', 'GET'])
-@login_required
+#@login_required
 def changepassword():
-    return render_template('sorry.html')
+    # This will change the users password
+    if request.method == "POST":
+        password = request.form.get('password')
+        newpassword = request.form.get('newpassword')
+        confirmation = request.form.get('confirmation')
+
+        # Check for errors
+        if not password or not newpassword or not confirmation:
+            print('please fill all spaces')
+            return render_template('error.html')
+
+        elif newpassword != confirmation:
+            print('passwords dont match')
+            return render_template('error.html')
+
+        else:
+            # Fetch user data from database
+            user_id = session['user']
+            user = Users.query.filter_by(id=user_id).first()
+            
+            # Check password
+            if user.check_password(password):
+                
+                # Try to insert into database
+                try:
+                    #user = Users(
+                    #    hash = password,
+                    #)
+
+                    user.hash = user.set_password(password)
+                    #db.session.update(user)
+                    db.session.commit()
+                    return "succes"#redirect('/')
+
+                # If it fails...
+                except:
+                    print('couldnt insert into database')
+                    return render_template('error.html')
+
+            # If wrong password
+            else:
+                print('wrong password')
+                return redirect('/')
+
+    # This will render the change password form
+    else:
+        return render_template('changepassword.html')
 
 
 @app.route('/logout', methods=['POST', 'GET'])
 @login_required
 def logout():
-    return render_template('sorry.html')
+    # This will clear the user session
+    session.clear()
+    return redirect('/')
 
 
 @app.route('/search', methods=['POST', 'GET'])
