@@ -96,6 +96,7 @@ def register():
                 user.set_password(password)
                 db.session.add(user)
                 db.session.commit()
+                session['user'] = user.id
                 return redirect('/')
 
             # If it fails...
@@ -157,7 +158,7 @@ def delete():
 
 
 @app.route('/changepassword', methods=['POST', 'GET'])
-#@login_required
+@login_required
 def changepassword():
     # This will change the users password
     if request.method == "POST":
@@ -181,7 +182,10 @@ def changepassword():
             
             # Check password
             if user.check_password(password):
-                
+ ###################################################################
+ ####### This part is deleting the password from db and not updating  
+ ###################################################################
+              
                 # Try to insert into database
                 try:
                     #user = Users(
@@ -189,7 +193,7 @@ def changepassword():
                     #)
 
                     user.hash = user.set_password(password)
-                    #db.session.update(user)
+                    db.session.add(user)
                     db.session.commit()
                     return "succes"#redirect('/')
 
