@@ -129,8 +129,11 @@ def login():
         if user.check_password(password):
             session['user'] = user.id
 
-###################### this part I'm changing, tryin to implement flash messages
-###################### also changed layout.html
+###################### This part I'm changing, tryin to implement flash messages
+###################### Also changed layout.html
+###################### Trying to implement flash messages
+###################### It has worked wonders
+
             flash("You are successfuly logged in!")  
             return redirect('/home')      
         
