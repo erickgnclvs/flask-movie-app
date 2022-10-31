@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, session, flash
+from flask import Flask, render_template, redirect, request, session, flash, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from helpers import login_required
@@ -76,12 +76,12 @@ def register():
 
         # Check for errors
         if not username or not password or not confirmation:
-            print('please fill all spaces')
-            return render_template('error.html')
+            flash('Please fill all the fields')
+            return redirect('/register')
         
         elif password != confirmation:
-            print('passwords dont match')
-            return render_template('error.html')
+            flash("Passwords don't match!")
+            return redirect('/register')
         
         # If no errors then register
         else:
@@ -97,12 +97,13 @@ def register():
                 db.session.add(user)
                 db.session.commit()
                 session['user'] = user.id
-                return redirect('/')
+                flash("You have succesfully registered!")
+                return redirect('/home')
 
             # If it fails...
             except:
-                print('couldnt insert into database')
-                return render_template('error.html')
+                flash('Username already exists :(')
+                return redirect('/register')
 
     # This will render the registration form
     else:
@@ -118,8 +119,8 @@ def login():
         
         # Handle errors
         if not username or not password:
-            print('please fill all spaces')
-            return render_template('error.html')
+            flash('Please fill all the fileds')
+            return redirect('/login')
 
         # Fetch user data from database
         user = Users.query.filter_by(username=username).first()
@@ -127,12 +128,16 @@ def login():
         # Check password
         if user.check_password(password):
             session['user'] = user.id
-            return redirect('/')    
+
+###################### this part I'm changing, tryin to implement flash messages
+###################### also changed layout.html
+            flash("You are successfuly logged in!")  
+            return redirect('/home')      
         
         # If passwords don't match
         else:
-            print('wrong password')
-            return 'error'
+            flash('Wrong password')
+            return redirect('/login')
 
     # This will render the login form
     else:
@@ -168,44 +173,44 @@ def changepassword():
 
         # Check for errors
         if not password or not newpassword or not confirmation:
-            print('please fill all spaces')
-            return render_template('error.html')
+            flash('Please fill all spaces')
+            return redirect('/changepassword')
 
         elif newpassword != confirmation:
-            print('passwords dont match')
-            return render_template('error.html')
+            flash("Passwords don't match")
+            return redirect('/changepassword')
 
         else:
-            # Fetch user data from database
+            # Fetch user data from database to check password
             user_id = session['user']
             user = Users.query.filter_by(id=user_id).first()
             
-            # Check password
+            # Check if password is correct
             if user.check_password(password):
- ###################################################################
- ####### This part is deleting the password from db and not updating  
- ###################################################################
+
+        #############################################################################
+        ####### This part is deleting the password from db and not updating #########
+        #############################################################################
+
+        ####### Fixed it ############################################################ 
               
                 # Try to insert into database
                 try:
-                    #user = Users(
-                    #    hash = password,
-                    #)
-
-                    user.hash = user.set_password(password)
-                    db.session.add(user)
+                    hash = generate_password_hash(newpassword)
+                    Users.query.filter_by(id=user_id).update(dict(hash=hash))
                     db.session.commit()
-                    return "succes"#redirect('/')
-
+                    flash('Password updated')
+                    return redirect('/changepassword')
+                
                 # If it fails...
                 except:
-                    print('couldnt insert into database')
-                    return render_template('error.html')
+                    flash('There was an error trying to change your password :(')
+                    return redirect('/changepassword')
 
             # If wrong password
             else:
-                print('wrong password')
-                return redirect('/')
+                flash('Wrong password')
+                return redirect('/changepassword')
 
     # This will render the change password form
     else:
@@ -216,9 +221,15 @@ def changepassword():
 @login_required
 def logout():
     # This will clear the user session
-    session.clear()
-    return redirect('/')
-
+    try:
+        session.clear()
+        flash("You have logged out")
+        return redirect('/')
+    
+    # If it fails there is a message
+    except:
+        flash("Some error have ocurred")
+        return redirect('/')
 
 @app.route('/search', methods=['POST', 'GET'])
 @login_required
@@ -231,6 +242,7 @@ def password():
     return render_template('sorry.html')
 
 
+# Regular Python run statement (with debug)
 if __name__ == '__main__':
     app.run(debug=True)
 
