@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from helpers import login_required
 from werkzeug.security import check_password_hash, generate_password_hash
-
+from imdb import Cinemagoer
 
 # Start Flask
 app = Flask(__name__)
@@ -39,7 +39,15 @@ class Users(db.Model):
 with app.app_context():
     db.create_all()
 
+
+# Initiate Cinemagoer
+ia = Cinemagoer()
+
+
+
+
 # Clear all sessions
+
 
 @app.after_request
 def after_request(response):
@@ -57,7 +65,8 @@ def index():
 @app.route('/home', methods=['POST', 'GET'])
 @login_required
 def home():
-    return render_template('about.html')
+    # This will render the search form - in tests
+    return render_template('index.html')
 
 @app.route('/about', methods=['GET'])
 def about():
@@ -237,6 +246,9 @@ def logout():
 @app.route('/search', methods=['POST', 'GET'])
 @login_required
 def search():
+    # This will search for movies - in tests
+    q = request.args.get('q')
+    print(q)
     return render_template('sorry.html')
 
 
