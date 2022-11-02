@@ -13,3 +13,8 @@
 .nav-item {
   margin-bottom: 3px;
 }
+
+.form-control {
+  background-color: #fffdf2!important;
+  border-color: black!important;
+}

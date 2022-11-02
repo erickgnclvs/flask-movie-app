@@ -9,12 +9,12 @@
         <div class="mask">
             <div class="container d-flex align-items-center justify-content-center text-center h-100">
                 <div class="text-dark">
-                    <form class="form row" action="{{ url_for('search') }}" method="get">
-                        <div class="col-auto">
+                    <form class="form d-inline-flex" action="{{ url_for('search') }}" method="get">
+                        <div class="m-2">
                             <input autocomplete="off" required autofocus class="form-control mx-auto w-auto" id="q" name="q" placeholder="All movies are here" type="text">
                         </div>
-                        <div class="col-auto">
-                            <button type="submit" class="btn btn-outline-dark" value="Search">Search</button>
+                        <div class="">
+                            <button type="submit" class="btn btn-outline-dark m-2" value="Search">Search</button>
                         </div>
                     </form>
                 </div>
