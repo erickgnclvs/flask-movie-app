@@ -247,9 +247,10 @@ def logout():
 @login_required
 def search():
     # This will search for movies - in tests
-    q = request.args.get('q')
-    print(q)
-    return render_template('sorry.html')
+    if request.method == "GET":
+        q = request.args.get('q')
+        result = ia.search_movie(q)
+        return render_template('index.html', result=result)
 
 
 @app.route('/forgotpassword', methods=['POST', 'GET'])
