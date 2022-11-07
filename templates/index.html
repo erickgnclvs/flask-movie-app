@@ -23,14 +23,16 @@
     </div>
     <div class="container">
         <div class="row">
-            {% for movies in result %}
+            {% for movie in data %}
             <div class="col m-2">
                 <div class="card" style="width: 18rem;">
-                    <img src="..." class="card-img-top" alt="...">
+                    <img src="{{ movie['cover'] }}" class="card-img-top" alt="Cover">
                     <div class="card-body">
-                        <h5 class="card-title">{{ movies['title'] }}</h5>
-                        <p class="card-text">here there will be some movie information</p>
-                        <a href="#" class="btn btn-outline-dark m-2">add to favorites</a>
+                        <h5 class="card-title">{{ movie['title'] }}, {{ movie['year'] }}</h5>
+                        <p class="card-text">Type: {{ movie['kind'] }}</p>
+                        <form action="/add" method="POST">
+                            <button type="submit" class="btn btn-outline-dark m-2" value="{{ movie['id'] }}">Add to favorites / movie id: {{ movie['id'] }}</button>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -44,10 +44,8 @@ with app.app_context():
 ia = Cinemagoer()
 
 
-
-
 # Clear all sessions
-
+# Should I?
 
 @app.after_request
 def after_request(response):
@@ -62,7 +60,7 @@ def index():
     return redirect('/home')
 
 
-@app.route('/home', methods=['POST', 'GET'])
+@app.route('/home')
 @login_required
 def home():
     # This will render the search form - in tests
@@ -243,14 +241,39 @@ def logout():
         flash("Some error have ocurred")
         return redirect('/')
 
-@app.route('/search', methods=['POST', 'GET'])
+@app.route('/search')
 @login_required
 def search():
     # This will search for movies - in tests
-    if request.method == "GET":
-        q = request.args.get('q')
-        result = ia.search_movie(q)
-        return render_template('index.html', result=result)
+    # Search for keyword
+    # Grab movie ids 
+    # Create data with id, title, year, type, cover url
+    # Pass data to template
+     
+    
+    q = request.args.get('q')
+    result = ia.search_movie(q)
+
+    data = []
+
+    for movie in result:
+        data.append({
+                'id': movie.getID(),
+                'cover': movie['full-size cover url'],
+                'title': movie['title'],
+                'year':  movie.get('year', ''),
+                'kind':  movie['kind']
+                })
+
+
+    # This will filter and display only movies
+    for movie in data:
+        if movie['kind'] != 'movie':
+            data.remove(movie)
+            
+    # Print data for console checking
+    print(data)
+    return render_template('index.html', data=data)
 
 
 @app.route('/forgotpassword', methods=['POST', 'GET'])
