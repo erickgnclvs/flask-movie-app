@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, session, flash, url_for
+from flask import Flask, render_template, redirect, request, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from helpers import login_required
@@ -43,17 +43,6 @@ with app.app_context():
 # Initiate Cinemagoer
 ia = Cinemagoer()
 
-
-# Clear all sessions
-# Should I?
-
-@app.after_request
-def after_request(response):
-    """Ensure responses aren't cached"""
-    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-    response.headers["Expires"] = 0
-    response.headers["Pragma"] = "no-cache"
-    return response
 
 @app.route('/')
 def index():
@@ -249,28 +238,24 @@ def search():
     # Grab movie ids 
     # Create data with id, title, year, type, cover url
     # Pass data to template
-     
     
+
     q = request.args.get('q')
     result = ia.search_movie(q)
 
     data = []
 
     for movie in result:
-        data.append({
-                'id': movie.getID(),
-                'cover': movie['full-size cover url'],
-                'title': movie['title'],
-                'year':  movie.get('year', ''),
-                'kind':  movie['kind']
-                })
-
-
-    # This will filter and display only movies
-    for movie in data:
-        if movie['kind'] != 'movie':
-            data.remove(movie)
-            
+        if movie['kind'] == 'movie' or movie['kind'] == 'tv series' and movie['full-size cover url'] and movie['full-size cover url'] != "https://m.media-amazon.png":
+            data.append({
+                    'id': movie.getID(),
+                    'cover': movie['full-size cover url'],
+                    'title': movie['title'],
+                    'kind': movie['kind'],
+                    'year':  movie.get('year', ''),
+                    })
+    
+    
     # Print data for console checking
     print(data)
     return render_template('index.html', data=data)
