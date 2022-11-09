@@ -10,6 +10,8 @@ App structure:
 
     /home   /register   /login    /forgotpassword   /changepassword   /search   /favorites    /add    /delete    /logout  
 
+# TODO: Remove cinemagoer and add API
+
 <h2>//PSEUDOCODE</h2>
 <br>
 
