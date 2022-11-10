@@ -3,7 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from helpers import login_required
 from werkzeug.security import check_password_hash, generate_password_hash
-from imdb import Cinemagoer
+import tmdbsimple as tmdb
+
 
 # TODO november 10th:
 # Get rid of Cinemagoer package
@@ -48,8 +49,12 @@ with app.app_context():
     db.create_all()
 
 
-# Initiate Cinemagoer
-ia = Cinemagoer()
+# Connect TMDB API 
+tmdb.API_KEY = 'b0c85929904b01fc66d943266877e630'
+
+# Set timeout for requests
+# 5 seconds, for both connect and read
+tmdb.REQUESTS_TIMEOUT = 5
 
 
 @app.route('/')
@@ -242,41 +247,52 @@ def logout():
 @app.route('/search')
 @login_required
 def search():
-    # On development
-    # Update route when API is connected
-    # This will search for movies - in tests
+    # This will search for movies and series
     # Search for keyword
-    # Grab movie ids 
-    # Create data with id, title, year, type, cover url
+    # Iterate through result 
+    # Create data with id, title, year, kind, cover
     # Pass data to template
 
-    q = request.args.get('q', None)
-    
-    if q:
+    # Initiate search class from TMDB module
+    search = tmdb.Search()
 
-        result = ia.search_movie(q)
-        data = []
+    # Store request in a variable
+    query = request.args.get('q')
 
-        for movie in result:
-            if movie['kind'] == 'movie' or movie['kind'] == 'tv series':
+    # Search for results (stored in search.results)
+    search.multi(query=query)
+
+    # Create a list
+    data = []
+
+    # Iterate through result
+    for movie in search.results:
+
+        # If there is a poster continue
+        if movie['poster_path'] != None:
+            
+            # If its a movie append information on data list
+            if movie['media_type'] == 'movie':
                 data.append({
-                        'id': movie.getID(),
-                        'cover': movie['full-size cover url'],
-                        'title': movie['title'],
-                        'kind': movie['kind'],
-                        'year':  movie.get('year', ''),
-                        })
+                    'id' : movie['id'],
+                    'cover' : movie['poster_path'],
+                    'title' : movie['title'],
+                    'kind' : movie['media_type'],
+                    'year' : movie['release_date'][0:4]
+                })
+            
+            # If its a tv series append information on data list
+            if movie['media_type'] == 'tv':
+                data.append({
+                    'id' : movie['id'],
+                    'cover' : movie['poster_path'],
+                    'title' : movie['name'],
+                    'kind' : movie['media_type'],
+                    'year' : movie['first_air_date'][0:4]
+                })
 
-
-        # Print data for console checking
-        print(data)
-
-        # Return data in same page (index.html) or in a new (search.html)?
-        return render_template('index.html', data=data, q=q)
-
-    else:
-        flash('no query')
-        return redirect('/home')
+    # Render index.html passing data
+    return render_template('index.html', data=data)
 
 
 @app.route('/forgotpassword', methods=['POST', 'GET'])

@@ -26,15 +26,15 @@
             {% for movie in data %}
             <div class="col m-2">
                 <div class="card" style="width: 18rem;">
-                    {% if movie['cover'] and movie['cover'] != "https://m.media-amazon.png" %}
-                        <img src="{{ movie['cover'] }}" class="card-img-top" alt="Cover">
-                    {% endif %}
-                    <!-- else it shows a default movie cover -->
+                    <img src="https://image.tmdb.org/t/p/original{{ movie['cover'] }}" class="card-img-top" alt="Cover">
                     <div class="card-body">
-                        <h5 class="card-title">{{ movie['title'] }}, {{ movie['year'] }}</h5>
-                        <p class="card-text"><span class="fw-bold">Type:</span> {{ movie['kind'] }}</p>
+                        <h5 class="card-title">{{ movie['title'] }} ({{ movie['year'] }})</h5>
+                        <p class="card-text"><span class="fw-bold">Type: </span>
+                            {% if movie['kind'] == 'tv' %}Series{% endif %}
+                            {% if movie['kind'] == 'movie' %}Movie{% endif %}
+                        </p>
                         <form action="{{ url_for('add') }}" method="POST">
-                            <button type="submit" class="btn btn-outline-dark m-2" value="{{ movie['id'] }}">{{ movie['id'] }}</button>
+                            <button type="submit" class="btn btn-outline-dark m-2" value="{{ movie['id'] }}">Add to favorites</button>
                         </form>
                     </div>
                 </div>
