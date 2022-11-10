@@ -26,12 +26,15 @@
             {% for movie in data %}
             <div class="col m-2">
                 <div class="card" style="width: 18rem;">
-                    <img src="{{ movie['cover'] }}" class="card-img-top" alt="Cover">
+                    {% if movie['cover'] and movie['cover'] != "https://m.media-amazon.png" %}
+                        <img src="{{ movie['cover'] }}" class="card-img-top" alt="Cover">
+                    {% endif %}
+                    <!-- else it shows a default movie cover -->
                     <div class="card-body">
                         <h5 class="card-title">{{ movie['title'] }}, {{ movie['year'] }}</h5>
-                        <p class="card-text">Type: {{ movie['kind'] }}</p>
-                        <form action="/add" method="POST">
-                            <button type="submit" class="btn btn-outline-dark m-2" value="{{ movie['id'] }}">Add to favorites / movie id: {{ movie['id'] }}</button>
+                        <p class="card-text"><span class="fw-bold">Type:</span> {{ movie['kind'] }}</p>
+                        <form action="{{ url_for('add') }}" method="POST">
+                            <button type="submit" class="btn btn-outline-dark m-2" value="{{ movie['id'] }}">{{ movie['id'] }}</button>
                         </form>
                     </div>
                 </div>

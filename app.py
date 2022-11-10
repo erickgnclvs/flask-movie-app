@@ -240,25 +240,32 @@ def search():
     # Pass data to template
     
 
-    q = request.args.get('q')
-    result = ia.search_movie(q)
-
-    data = []
-
-    for movie in result:
-        if movie['kind'] == 'movie' or movie['kind'] == 'tv series' and movie['full-size cover url'] and movie['full-size cover url'] != "https://m.media-amazon.png":
-            data.append({
-                    'id': movie.getID(),
-                    'cover': movie['full-size cover url'],
-                    'title': movie['title'],
-                    'kind': movie['kind'],
-                    'year':  movie.get('year', ''),
-                    })
+    q = request.args.get('q', None)
     
-    
-    # Print data for console checking
-    print(data)
-    return render_template('index.html', data=data)
+    if q:
+
+        result = ia.search_movie(q)
+
+        data = []
+
+        for movie in result:
+            if movie['kind'] == 'movie' or movie['kind'] == 'tv series':
+                data.append({
+                        'id': movie.getID(),
+                        'cover': movie['full-size cover url'],
+                        'title': movie['title'],
+                        'kind': movie['kind'],
+                        'year':  movie.get('year', ''),
+                        })
+
+
+        # Print data for console checking
+        print(data)
+        # Return data in same page (index.html) or in a new (search.html)?
+        return render_template('index.html', data=data, q=q)
+    else:
+        flash('no query')
+        return redirect('/home')
 
 
 @app.route('/forgotpassword', methods=['POST', 'GET'])
