@@ -5,13 +5,21 @@ from helpers import login_required
 from werkzeug.security import check_password_hash, generate_password_hash
 from imdb import Cinemagoer
 
+# TODO november 10th:
+# Get rid of Cinemagoer package
+# Connect TMDB API
+# Write helper functions in helpers.py
+# Finish writing app.py
+# Style the page with Bootstrap
+
+
 # Start Flask
 app = Flask(__name__)
 
-# Ensure templates are auto-reloaded
+# Make sure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
-# Configure session to use filesystem (instead of signed cookies)
+# Configure session to use filesystem
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
@@ -46,6 +54,7 @@ ia = Cinemagoer()
 
 @app.route('/')
 def index():
+    # This will redirect the user to HOME
     return redirect('/home')
 
 
@@ -125,11 +134,6 @@ def login():
         if user.check_password(password):
             session['user'] = user.id
 
-###################### This part I'm changing, tryin to implement flash messages
-###################### Also changed layout.html
-###################### Trying to implement flash messages
-###################### It has worked wonders
-
             flash("You are successfuly logged in!")  
             return redirect('/home')      
         
@@ -146,18 +150,29 @@ def login():
 @app.route('/favorites', methods=['POST', 'GET'])
 @login_required
 def favorites():
+    # This display the favorites list
+    # TODO:
+    
+
     return render_template('sorry.html')
 
 
 @app.route('/add', methods=['POST', 'GET'])
 @login_required
 def add():
+    # This will add a movie to the the favorites list
+    # TODO:
+    
+
     return render_template('sorry.html')
 
 
 @app.route('/delete', methods=['POST', 'GET'])
 @login_required
 def delete():
+    # This will delete a movie from the favorites list
+    # TODO:
+
     return render_template('sorry.html')
 
 
@@ -186,12 +201,6 @@ def changepassword():
             
             # Check if password is correct
             if user.check_password(password):
-
-        #############################################################################
-        ####### This part is deleting the password from db and not updating #########
-        #############################################################################
-
-        ####### Fixed it ############################################################ 
               
                 # Try to insert into database
                 try:
@@ -233,19 +242,19 @@ def logout():
 @app.route('/search')
 @login_required
 def search():
+    # On development
+    # Update route when API is connected
     # This will search for movies - in tests
     # Search for keyword
     # Grab movie ids 
     # Create data with id, title, year, type, cover url
     # Pass data to template
-    
 
     q = request.args.get('q', None)
     
     if q:
 
         result = ia.search_movie(q)
-
         data = []
 
         for movie in result:
@@ -261,8 +270,10 @@ def search():
 
         # Print data for console checking
         print(data)
+
         # Return data in same page (index.html) or in a new (search.html)?
         return render_template('index.html', data=data, q=q)
+
     else:
         flash('no query')
         return redirect('/home')
@@ -270,6 +281,9 @@ def search():
 
 @app.route('/forgotpassword', methods=['POST', 'GET'])
 def password():
+    # This will reset user's password when forgotten
+    # TODO:
+
     return render_template('sorry.html')
 
 

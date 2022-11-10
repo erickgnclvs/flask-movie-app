@@ -15,3 +15,9 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+# TODO:
+# Generate API connection 
+# Write funcions to fetch API data and
+# Convert JSON data to a Python dictionary
+# Return API data in form of a dict
+# Import funcitions to app.py
