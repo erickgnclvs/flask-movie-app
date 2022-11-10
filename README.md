@@ -2,15 +2,15 @@
 
 After 5 months of CS50, I finally started my final project. 
 
-It is going to be a Web Application in which you will be able to select movies and series from a database fed by IMDb API and add them to a favorites list
+It is going to be a Web Application in which you will be able to select movies and series from a database fed by TMDb API and add them to a favorites list
 
-It will be implemented on Python 3.10.6 with Flask 2.2.2.
+It will be implemented on Python using the Flask Framework, SQL database for users data and an API to fetch movies/series data.
+
 
 App structure:
 
     /home   /register   /login    /forgotpassword   /changepassword   /search   /favorites    /add    /delete    /logout  
 
-# TODO: Remove cinemagoer and add API
 
 <h2>//PSEUDOCODE</h2>
 <br>
