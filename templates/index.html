@@ -34,7 +34,7 @@
                             {% if movie['kind'] == 'movie' %}Movie{% endif %}
                         </p>
                         <form action="{{ url_for('add') }}" method="POST">
-                            <button type="submit" class="btn btn-outline-dark m-2" value="{{ movie['id'] }}">Add to favorites</button>
+                            <button type="submit" class="btn btn-outline-dark m-2" name="movie_id" value="{{ movie['id'] }}">Add to favorites</button>
                         </form>
                     </div>
                 </div>

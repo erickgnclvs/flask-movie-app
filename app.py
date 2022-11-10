@@ -32,6 +32,7 @@ app.config['SECRET_KEY'] = 'fi2o42j3o4ij234o23jjj234jklh'
 db = SQLAlchemy(app)
 
 # Set database
+# Create users table
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
@@ -42,6 +43,11 @@ class Users(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.hash, password)
+
+# Create favorites table
+class Favorites(db.Model):
+    user_id = db.Column(db.Integer, primary_key=True)
+    movie_id = db.Column(db.Integer)
 
 
 # Create database
@@ -62,7 +68,6 @@ def index():
     # This will redirect the user to HOME
     return redirect('/home')
 
-
 @app.route('/home')
 @login_required
 def home():
@@ -73,7 +78,6 @@ def home():
 def about():
     # This displays what the project is going to be and my Instagram and GitHub
     return render_template('about.html')
-
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
@@ -119,7 +123,6 @@ def register():
     else:
         return render_template('register.html')
 
-
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     # This will log the user in
@@ -151,26 +154,27 @@ def login():
     else:
         return render_template("login.html")
 
-
 @app.route('/favorites', methods=['POST', 'GET'])
 @login_required
 def favorites():
     # This display the favorites list
     # TODO:
-    
 
     return render_template('sorry.html')
-
 
 @app.route('/add', methods=['POST', 'GET'])
 @login_required
 def add():
     # This will add a movie to the the favorites list
+    # Grab movie id from search results "Add to favorites" button
+    movie_id = request.form.get('movie_id')
+    print(movie_id)
+
     # TODO:
-    
+    # Add movie to database
 
-    return render_template('sorry.html')
-
+    # Display favorites
+    return redirect('/favorites')
 
 @app.route('/delete', methods=['POST', 'GET'])
 @login_required
@@ -179,7 +183,6 @@ def delete():
     # TODO:
 
     return render_template('sorry.html')
-
 
 @app.route('/changepassword', methods=['POST', 'GET'])
 @login_required
@@ -228,7 +231,6 @@ def changepassword():
     # This will render the change password form
     else:
         return render_template('changepassword.html')
-
 
 @app.route('/logout', methods=['POST', 'GET'])
 @login_required
@@ -294,14 +296,12 @@ def search():
     # Render index.html passing data
     return render_template('index.html', data=data)
 
-
 @app.route('/forgotpassword', methods=['POST', 'GET'])
 def password():
     # This will reset user's password when forgotten
     # TODO:
 
     return render_template('sorry.html')
-
 
 # Regular Python run statement (with debug)
 if __name__ == '__main__':
