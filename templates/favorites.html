@@ -9,14 +9,7 @@
         <div class="mask">
             <div class="container d-flex align-items-center justify-content-center text-center h-100">
                 <div class="text-dark">
-                    <form class="form d-inline-flex" action="{{ url_for('search') }}" method="GET">
-                        <div class="m-2">
-                            <input autocomplete="off" required autofocus class="form-control mx-auto w-auto" id="q" name="q" placeholder="All movies are here" type="text">
-                        </div>
-                        <div class="">
-                            <button type="submit" class="btn btn-outline-dark m-2" value="Search">Search</button>
-                        </div>
-                    </form>
+                    <h3>Favorites</h3>
                 </div>
             </div>
         </div>
@@ -33,8 +26,8 @@
                             {% if movie['kind'] == 'tv' %}Series{% endif %}
                             {% if movie['kind'] == 'movie' %}Movie{% endif %}
                         </p>
-                        <form action="{{ url_for('add') }}" method="POST">
-                            <button type="submit" class="btn btn-outline-dark m-2" name="id" value="{{ movie['id'] }}">Add to favorites</button>
+                        <form action="{{ url_for('delete') }}" method="POST">
+                            <button type="submit" class="btn btn-outline-dark m-2" name="id" value="{{ movie['id'] }}">Remove from favorites</button>
                         </form>
                     </div>
                 </div>

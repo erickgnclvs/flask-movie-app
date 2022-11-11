@@ -6,10 +6,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import tmdbsimple as tmdb
 
 
-# TODO november 10th:
-# Get rid of Cinemagoer package
-# Connect TMDB API
-# Write helper functions in helpers.py
+# TODO:
 # Finish writing app.py
 # Style the page with Bootstrap
 
@@ -48,7 +45,6 @@ class Users(db.Model):
 class Favorites(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     movie_id = db.Column(db.Integer)
-
 
 # Create database
 with app.app_context():
@@ -160,15 +156,19 @@ def favorites():
     # This display the favorites list
     # TODO:
 
-    return render_template('sorry.html')
+
+    return render_template('favorites.html')
 
 @app.route('/add', methods=['POST', 'GET'])
 @login_required
 def add():
     # This will add a movie to the the favorites list
     # Grab movie id from search results "Add to favorites" button
-    movie_id = request.form.get('movie_id')
-    print(movie_id)
+    id = request.form.get('id')
+    print(id)
+
+    result = tmdb.Find(id)
+    print(result)
 
     # TODO:
     # Add movie to database
@@ -269,29 +269,31 @@ def search():
 
     # Iterate through result
     for movie in search.results:
+        
+        # If its movie or series
+        if movie['media_type'] == 'tv' or movie['media_type'] == 'movie':
 
-        # If there is a poster continue
-        if movie['poster_path'] != None:
-            
-            # If its a movie append information on data list
-            if movie['media_type'] == 'movie':
-                data.append({
-                    'id' : movie['id'],
-                    'cover' : movie['poster_path'],
-                    'title' : movie['title'],
-                    'kind' : movie['media_type'],
-                    'year' : movie['release_date'][0:4]
-                })
-            
-            # If its a tv series append information on data list
-            if movie['media_type'] == 'tv':
-                data.append({
-                    'id' : movie['id'],
-                    'cover' : movie['poster_path'],
-                    'title' : movie['name'],
-                    'kind' : movie['media_type'],
-                    'year' : movie['first_air_date'][0:4]
-                })
+            # If there is a poster
+            if movie['poster_path'] and movie['poster_path'] != None:
+
+                # If its a movie append information on data list
+                if movie['media_type'] == 'movie':
+                    data.append({
+                        'id' : movie['id'],
+                        'cover' : movie['poster_path'],
+                        'title' : movie['title'],
+                        'kind' : movie['media_type'],
+                        'year' : movie['release_date'][0:4]
+                    })
+                # If its a tv series append information on data list
+                if movie['media_type'] == 'tv':
+                    data.append({
+                        'id' : movie['id'],
+                        'cover' : movie['poster_path'],
+                        'title' : movie['name'],
+                        'kind' : movie['media_type'],
+                        'year' : movie['first_air_date'][0:4]
+                    })
 
     # Render index.html passing data
     return render_template('index.html', data=data)
