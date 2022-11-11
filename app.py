@@ -167,8 +167,20 @@ def add():
     id = request.form.get('id')
     print(id)
 
-    result = tmdb.Find(id)
-    print(result)
+    # Try searching id on Movies
+    try:
+        movie = tmdb.Movies(id)
+        result = movie.info()
+        print(result)
+        
+    # Try searching id on TV series
+    except:
+        tv = tmdb.TV(id)
+        result = tv.info()
+        print(result)
+
+    data = []
+
 
     # TODO:
     # Add movie to database
