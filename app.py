@@ -43,7 +43,8 @@ class Users(db.Model):
 
 # Create favorites table
 class Favorites(db.Model):
-    user_id = db.Column(db.Integer, primary_key=True)
+    index = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer)
     movie_id = db.Column(db.Integer)
 
 # Create database
@@ -153,19 +154,26 @@ def login():
 @app.route('/favorites', methods=['POST', 'GET'])
 @login_required
 def favorites():
+    # Working on
     # This display the favorites list
     # TODO:
-
+    favorites = Favorites
+    user_id = session['user']
+    result = favorites.query.filter_by(user_id=user_id).all()
+    print(result)
 
     return render_template('favorites.html')
 
 @app.route('/add', methods=['POST', 'GET'])
 @login_required
 def add():
+    # Working on
     # This will add a movie to the the favorites list
     # Grab movie id from search results "Add to favorites" button
     id = request.form.get('id')
     print(id)
+
+    result = []
 
     # Try searching id on Movies
     try:
@@ -179,11 +187,18 @@ def add():
         result = tv.info()
         print(result)
 
-    data = []
-
-
+    user_id = session['user']
+    print(user_id)
     # TODO:
     # Add movie to database
+    favorites = Favorites(
+        user_id = user_id,
+        movie_id = id,
+    )
+
+    db.session.add(favorites)
+    db.session.commit()
+
 
     # Display favorites
     return redirect('/favorites')
