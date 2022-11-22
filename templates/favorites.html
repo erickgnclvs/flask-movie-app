@@ -16,16 +16,14 @@
     </div>
     <div class="container">
         <div class="row">
-            {% for movie in data %}
+            {% for movie in finaldata %}
             <div class="col m-2">
                 <div class="card" style="width: 18rem;">
                     <img src="https://image.tmdb.org/t/p/original{{ movie['cover'] }}" class="card-img-top" alt="Cover">
                     <div class="card-body">
                         <h5 class="card-title">{{ movie['title'] }} ({{ movie['year'] }})</h5>
-                        <p class="card-text"><span class="fw-bold">Type: </span>
-                            {% if movie['kind'] == 'tv' %}Series{% endif %}
-                            {% if movie['kind'] == 'movie' %}Movie{% endif %}
-                        </p>
+                        <p class="card-text"><span class="fw-bold">Type: {{ movie['kind'] }}</span></p>
+                        <p class="card-text">{{ movie['overview'] }}</p>
                         <form action="{{ url_for('delete') }}" method="POST">
                             <button type="submit" class="btn btn-outline-dark m-2" name="id" value="{{ movie['id'] }}">Remove from favorites</button>
                         </form>
