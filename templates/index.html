@@ -25,7 +25,7 @@
         <div class="row">
             {% for movie in data %}
             <div class="col m-2">
-                <div class="card" style="width: 18rem;">
+                <div class="card h-100" style="width: 18rem;">
                     <img src="https://image.tmdb.org/t/p/original{{ movie['cover'] }}" class="card-img-top" alt="Cover">
                     <div class="card-body">
                         <h5 class="card-title">{{ movie['title'] }} ({{ movie['year'] }})</h5>
