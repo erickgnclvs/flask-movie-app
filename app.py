@@ -7,8 +7,7 @@ import tmdbsimple as tmdb
 
 
 # TODO:
-# Implement forgot password
-# Style the page with Bootstrap
+# Style the app with Bootstrap
 
 # Start Flask
 app = Flask(__name__)
@@ -57,19 +56,11 @@ tmdb.API_KEY = 'b0c85929904b01fc66d943266877e630'
 # 5 seconds, for both connect and read
 tmdb.REQUESTS_TIMEOUT = 5
 
-# From CS50 finance
-@app.after_request
-def after_request(response):
-    """Ensure responses aren't cached"""
-    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-    response.headers["Expires"] = 0
-    response.headers["Pragma"] = "no-cache"
-    return response
-
 @app.route('/')
 def index():
     # This will redirect the user to HOME
     return redirect('/home')
+
 
 @app.route('/home')
 @login_required
@@ -77,10 +68,12 @@ def home():
     # This will render the search form - in tests
     return render_template('index.html')
 
+
 @app.route('/about', methods=['GET'])
 def about():
     # This displays what the project is going to be and my Instagram and GitHub
     return render_template('about.html')
+
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
@@ -126,6 +119,7 @@ def register():
     else:
         return render_template('register.html')
 
+
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     # This will log the user in
@@ -156,6 +150,7 @@ def login():
     # This will render the login form
     else:
         return render_template("login.html")
+
 
 @app.route('/favorites', methods=['POST', 'GET'])
 @login_required
@@ -207,6 +202,7 @@ def favorites():
 
     return render_template('favorites.html', finaldata=finaldata)
 
+
 @app.route('/add', methods=['POST', 'GET'])
 @login_required
 def add():
@@ -222,6 +218,7 @@ def add():
 
     # Display favorites
     return redirect('/favorites')
+
 
 @app.route('/delete', methods=['POST', 'GET'])
 @login_required
@@ -287,6 +284,7 @@ def changepassword():
     else:
         return render_template('changepassword.html')
 
+
 @app.route('/logout', methods=['POST', 'GET'])
 @login_required
 def logout():
@@ -300,6 +298,7 @@ def logout():
     except:
         flash("Some error have ocurred")
         return redirect('/')
+
 
 @app.route('/search')
 @login_required
@@ -347,12 +346,6 @@ def search():
     # Render index.html passing data
     return render_template('index.html', data=data)
 
-@app.route('/forgotpassword', methods=['POST', 'GET'])
-def password():
-    # This will reset user's password when forgotten
-    # TODO:
-
-    return render_template('sorry.html')
 
 # Regular Python run statement (with debug)
 if __name__ == '__main__':
