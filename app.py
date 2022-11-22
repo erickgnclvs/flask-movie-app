@@ -159,10 +159,51 @@ def favorites():
     # TODO:
     favorites = Favorites
     user_id = session['user']
-    result = favorites.query.filter_by(user_id=user_id).all()
-    print(result)
+    result = favorites.query.filter_by(user_id=user_id).with_entities(Favorites.movie_id).all()
+    # This prints a list
 
-    return render_template('favorites.html')
+#    print(result)
+    data = []
+
+    # This will print only the IDs
+    for id in result:
+#        print(id[0])
+        try:
+            movie = tmdb.Movies(id[0])
+            movieresult = movie.info()
+            data.append(movieresult)
+
+        # Try searching id on TV series
+        except:
+            tv = tmdb.TV(id[0])
+            tvresult = tv.info()
+            data.append(tvresult)
+
+    finaldata = []
+
+    for item in data:
+        # If its a movie append information on data list
+        try:
+            finaldata.append({
+                'id' : item['id'],
+                'cover' : item['poster_path'],
+                'title' : item['title'],
+                'kind' : "Movie",
+                'year' : item['release_date'][0:4],
+                'overview' : item['overview']
+            })
+        # If its a tv series append information on data list
+        except:
+            finaldata.append({
+                'id' : item['id'],
+                'cover' : item['poster_path'],
+                'title' : item['name'],
+                'kind' : "Tv Series",
+                'year' : item['first_air_date'][0:4],
+                'overview' : item['overview']
+            })
+
+    return render_template('favorites.html', finaldata=finaldata)
 
 @app.route('/add', methods=['POST', 'GET'])
 @login_required
@@ -175,17 +216,18 @@ def add():
 
     result = []
 
+    # This part will be moved to /favorites
     # Try searching id on Movies
-    try:
-        movie = tmdb.Movies(id)
-        result = movie.info()
-        print(result)
-        
-    # Try searching id on TV series
-    except:
-        tv = tmdb.TV(id)
-        result = tv.info()
-        print(result)
+#    try:
+#        movie = tmdb.Movies(id)
+#        result = movie.info()
+#        print(result)
+#        
+#    # Try searching id on TV series
+#    except:
+#        tv = tmdb.TV(id)
+#        result = tv.info()
+#        print(result)
 
     user_id = session['user']
     print(user_id)
