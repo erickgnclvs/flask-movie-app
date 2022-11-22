@@ -7,9 +7,8 @@ import tmdbsimple as tmdb
 
 
 # TODO:
-# Finish writing app.py
+# Implement forgot password
 # Style the page with Bootstrap
-
 
 # Start Flask
 app = Flask(__name__)
@@ -51,7 +50,6 @@ class Favorites(db.Model):
 with app.app_context():
     db.create_all()
 
-
 # Connect TMDB API 
 tmdb.API_KEY = 'b0c85929904b01fc66d943266877e630'
 
@@ -59,6 +57,14 @@ tmdb.API_KEY = 'b0c85929904b01fc66d943266877e630'
 # 5 seconds, for both connect and read
 tmdb.REQUESTS_TIMEOUT = 5
 
+# From CS50 finance
+@app.after_request
+def after_request(response):
+    """Ensure responses aren't cached"""
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Expires"] = 0
+    response.headers["Pragma"] = "no-cache"
+    return response
 
 @app.route('/')
 def index():
@@ -154,20 +160,15 @@ def login():
 @app.route('/favorites', methods=['POST', 'GET'])
 @login_required
 def favorites():
-    # Working on
     # This display the favorites list
-    # TODO:
     favorites = Favorites
     user_id = session['user']
-    result = favorites.query.filter_by(user_id=user_id).with_entities(Favorites.movie_id).all()
-    # This prints a list
 
-#    print(result)
+    result = favorites.query.filter_by(user_id=user_id).with_entities(Favorites.movie_id).all()
     data = []
 
-    # This will print only the IDs
     for id in result:
-#        print(id[0])
+        # Try searching id on Movies
         try:
             movie = tmdb.Movies(id[0])
             movieresult = movie.info()
@@ -192,6 +193,7 @@ def favorites():
                 'year' : item['release_date'][0:4],
                 'overview' : item['overview']
             })
+
         # If its a tv series append information on data list
         except:
             finaldata.append({
@@ -209,7 +211,7 @@ def favorites():
 @login_required
 def add():
     # This will add a movie to the the favorites list
-    # Grab movie id from search results "Add to favorites" button
+    # Grab movie id from "Add to favorites" button
     id = request.form.get('id')
     user_id = session['user']
 
@@ -218,7 +220,6 @@ def add():
     db.session.add(favorites)
     db.session.commit()
 
-
     # Display favorites
     return redirect('/favorites')
 
@@ -226,7 +227,7 @@ def add():
 @login_required
 def delete():
     # This will delete a movie from the favorites list
-    # Grab movie id from search results "Deleto from favorites" button
+    # Grab movie id from "Remove from favorites" button
     id = request.form.get('id')
     user_id = session['user']
 
@@ -303,12 +304,6 @@ def logout():
 @app.route('/search')
 @login_required
 def search():
-    # This will search for movies and series
-    # Search for keyword
-    # Iterate through result 
-    # Create data with id, title, year, kind, cover
-    # Pass data to template
-
     # Initiate search class from TMDB module
     search = tmdb.Search()
 
@@ -362,4 +357,3 @@ def password():
 # Regular Python run statement (with debug)
 if __name__ == '__main__':
     app.run(debug=True)
-
