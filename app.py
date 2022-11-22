@@ -208,36 +208,13 @@ def favorites():
 @app.route('/add', methods=['POST', 'GET'])
 @login_required
 def add():
-    # Working on
     # This will add a movie to the the favorites list
     # Grab movie id from search results "Add to favorites" button
     id = request.form.get('id')
-    print(id)
-
-    result = []
-
-    # This part will be moved to /favorites
-    # Try searching id on Movies
-#    try:
-#        movie = tmdb.Movies(id)
-#        result = movie.info()
-#        print(result)
-#        
-#    # Try searching id on TV series
-#    except:
-#        tv = tmdb.TV(id)
-#        result = tv.info()
-#        print(result)
-
     user_id = session['user']
-    print(user_id)
-    # TODO:
-    # Add movie to database
-    favorites = Favorites(
-        user_id = user_id,
-        movie_id = id,
-    )
 
+    # Add movie to database
+    favorites = Favorites(user_id=user_id, movie_id=id)
     db.session.add(favorites)
     db.session.commit()
 
@@ -249,9 +226,17 @@ def add():
 @login_required
 def delete():
     # This will delete a movie from the favorites list
-    # TODO:
+    # Grab movie id from search results "Deleto from favorites" button
+    id = request.form.get('id')
+    user_id = session['user']
 
-    return render_template('sorry.html')
+    # Delete movie to database
+    Favorites.query.filter_by(user_id=user_id, movie_id=id).delete()
+    db.session.commit()
+
+    # Display favorites
+    return redirect('/favorites')
+
 
 @app.route('/changepassword', methods=['POST', 'GET'])
 @login_required
