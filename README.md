@@ -6,6 +6,7 @@ It is going to be a Web Application in which you will be able to select movies a
 
 It will be implemented on Python using the Flask Framework, SQL database for users data and an API to fetch movies/series data.
 
+#### Video Demo:  <URL HERE>
 
 App structure:
 
@@ -16,7 +17,7 @@ App structure:
 <br>
 
 initiate frameworks<br>
-initiate api<br>
+initiate api - tmdbsimple framework<br>
 initiate database<br>
 initiate session<br>
 <br>
@@ -81,14 +82,6 @@ grab data from movie brough by /favorites<br>
 try:<br>
 &emsp;delete data from favorites<br>
 except:<br>
-&emsp;error<br>
-<br>
-
-**/forgotpassword** - in login screen user will have a button that redirects here<br>
-display a form asking for username and secretanswer (thing you love most)<br>
-if data match database data:<br>
-&emsp;display a form with newpassword and newpassword confirmation<br>
-else:<br>
 &emsp;error<br>
 <br>
 
