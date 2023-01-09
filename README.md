@@ -6,7 +6,9 @@ It is going to be a Web Application in which you will be able to select movies a
 
 It will be implemented on Python using the Flask Framework, SQL database for users data and an API to fetch movies/series data.
 
-#### Video Demo:  <URL HERE>
+#### Video Demo:  https://www.youtube.com/watch?v=wilkhNr_CL0
+
+#### GitHub Repository:  https://github.com/erickgnclvs/finalproject
 
 App structure:
 
