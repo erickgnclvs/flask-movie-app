@@ -2,7 +2,9 @@
 
 Flask Movie App is a simple movie search application built using Flask and the TMDB API. It allows users to search for movies and series by title and displays information such as the titles's release year, genre and plot. The app also allows users to register, login, change password, and add or remove movies/series from their favorites list.
 
-This project was created as a final project for the Harvard CS50 course. You can view a video demo of the project [here](https://www.youtube.com/watch?v=wilkhNr_CL0).
+This project was created as a final project for the Harvard CS50 course. You can view a video demo of the project:
+
+[![MY VIDEO SNAPSHOT](https://img.youtube.com/vi/wilkhNr_CL0/0.jpg)](https://www.youtube.com/watch?v=wilkhNr_CL0)
 
 ## Installation
 
