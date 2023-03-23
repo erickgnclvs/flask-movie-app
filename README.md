@@ -1,27 +1,68 @@
-# This is my CS50 Final Project. 
+# Flask Movie App
 
-After 5 months of CS50, I finally started my final project. 
+Flask Movie App is a simple movie search application built using Flask and the TMDB API. It allows users to search for movies and series by title and displays information such as the titles's release year, genre and plot. The app also allows users to register, login, change password, and add or remove movies/series from their favorites list.
 
-It is going to be a Web Application in which you will be able to select movies and series from a database fed by TMDb API and add them to a favorites list
+This project was created as a final project for the Harvard CS50 course. You can view a video demo of the project [here](https://www.youtube.com/watch?v=wilkhNr_CL0).
 
-It will be implemented on Python using the Flask Framework, SQL database for users data and an API to fetch movies/series data.
+## Installation
 
-#### Video Demo:  https://www.youtube.com/watch?v=wilkhNr_CL0
+To install the dependencies, run:
 
-#### GitHub Repository:  https://github.com/erickgnclvs/finalproject
+```bash
+pip install -r requirements.txt
+```
+## Usage
+To start the application, run:
 
-App structure:
+```bash
+python app.py
+```
 
-    /home   /register   /login    /forgotpassword   /changepassword   /search   /favorites    /add    /delete    /logout  
+This will start the Flask development server. You can then access the application by navigating to http://localhost:5000 in your web browser.
+
+## Dependencies
+Flask Movie App requires the following dependencies:
+
+- Flask==2.2.2
+- Flask-Session==0.4.0
+- Flask-SQLAlchemy==3.0.2
+- Jinja2==3.1.2
+- MarkupSafe==2.1.1
+- requests==2.28.1
+- SQLAlchemy==1.4.42
+- tmdbsimple==2.9.1
+- Werkzeug==2.2.2
+
+These dependencies are listed in the *requirements.txt* file and can be installed using *pip*.
+
+## User Functions
+Flask Movie App offers the following functions to users:
+
+- Register: Users can register for an account to use the app.
+- Login: Users can log in to their account.
+- Change Password: Users can change their password after logging in.
+- Search Movies: Users can search for movies by title using the search bar on the home page.
+- Add to Favorites: Users can add movies to their favorites list by clicking on the heart icon.
+- Remove from Favorites: Users can remove movies from their favorites list by clicking on the red heart icon.
+
+## App structure:
+
+/home   /register   /login 
+/forgotpassword   /changepassword
+/search   /favorites    /add 
+/delete    /logout  
 
 
-<h2>//PSEUDOCODE</h2>
+## PSEUDOCODE
+
+This is how I started developing it.
+
 <br>
 
 initiate frameworks<br>
-initiate api - tmdbsimple framework<br>
-initiate database<br>
-initiate session<br>
+initiate api - tmdbsimple<br>
+initiate database - sqlalchemy<br>
+initiate session - flask session<br>
 <br>
 
 **/home** - display a search box redirecting users to /search<br>
