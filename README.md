@@ -55,9 +55,12 @@ Flask Movie App offers the following functions to users:
 /delete    /logout  
 
 
-## PSEUDOCODE
 
-This is how I started developing it.
+
+## Pseudocode
+
+
+> This is how I started developing it.
 
 <br>
 
